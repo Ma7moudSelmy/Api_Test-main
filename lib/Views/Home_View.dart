@@ -1,3 +1,4 @@
+import 'package:api_test/Models/Products_models.dart';
 import 'package:api_test/main.dart';
 import 'package:api_test/productCard/productCard.dart';
 import 'package:dio/dio.dart';
@@ -26,7 +27,10 @@ class _HomeViewState extends State<HomeView> {
             } else {
               Response response = snapshot.data!;
               final dynamic data = response.data;
-              List proudts = data['products'];
+              List<ProductsModels> proudts = [];
+              for (var proudtsmap in data['products']) {
+                proudts.add(ProductsModels.fromjson(proudtsmap));
+              }
               return GridView.builder(
                 itemCount: proudts.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -36,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
                   crossAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  return Productcard(product: proudts[index]);
+                  return ProductCard(product: proudts[index]);
                 },
               );
             }
