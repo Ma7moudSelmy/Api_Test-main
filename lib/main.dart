@@ -1,10 +1,10 @@
-import 'package:api_test/Views/Home_View.dart';
-import 'package:dio/dio.dart';
+import 'package:api_test/cubit/product_cubit.dart';
+import 'package:api_test/views/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() async {
+void main() {
   runApp(const MyApp());
-  await getAllProducts();
 }
 
 class MyApp extends StatelessWidget {
@@ -12,18 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeView());
+    return BlocProvider(
+      create: (context) => ProductCubit(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeView(),
+      ),
+    );
   }
-}
-
-Future<Response> getAllProducts() async {
-  final dio = Dio();
-  final Response response = await dio.get('https://dummyjson.com/products');
-  return response;
-}
-
-void getAllProducts2() async {
-  final dio = Dio();
-  final Response response = await dio.get('https://dummyjson.com/products');
-  print(response.data);
 }
